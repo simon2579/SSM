@@ -8,7 +8,7 @@
                            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!--配置整合mybits-->
     <!--1.关联数据库文件-->
-    <context:property-placeholder location="database.properities"/>
+    <context:property-placeholder location="database.properties"/>
 
     <!--2.数据库连接池-->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
