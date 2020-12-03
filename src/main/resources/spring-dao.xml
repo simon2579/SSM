@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--配置整合mybits-->
+    <!--1.关联数据库文件-->
+    <context:property-placeholder location="database.properities"/>
+
+    <!--2.数据库连接池-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="#{jdbc.driver}"/>
+        <property name="url" value="#{jdbc.url}"/>
+        <property name="username" value="#{jdbc.username}"/>
+        <property name="password" value="#{jdbc.password}"/>
+        <property name="maxActive" value="30"/>
+        <property name="minIdle" value="10"/>
+        <property name="defaultAutoCommit" value="false"/>
+    </bean>
+    <!--3.配置SqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--配置Mybatis全局配置文件:mybatis-config.xml-->
+        <property name="configLocation" value="mybatis-config.xml"/>
+    </bean>
+    <!--4.配置扫描Dao接口包,动态实现DAO接口注入到spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入sqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--给出需要扫描的Dao接口包-->
+        <property name="basePackage" value="com.simon.dao"/>
+    </bean>
+</beans>
